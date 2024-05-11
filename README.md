@@ -34,8 +34,6 @@ Pour lancer le projet, tapez:
 
 - sh start.sh
 
-Pour supprimer les volumes : docker-compose down -v
-
 Pour vérifier si les containers tournent:
 - docker ps
 
