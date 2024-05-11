@@ -1,0 +1,52 @@
+1 - KO - Créer un nouveau profil et soumettre sans avoir rempli tous les champs (subscribe)
+2 - KO - Créer un nouvel utilisateur avec une nouvelle adresse mail et deux mots de passe similaires mais incorrects
+3 - KO - Créer un nouvel utilisateur avec une nouvelle adresse mail et deux mots de passe corrects mais différents
+4 - OK - Créer un nouvel utilisateur avec une nouvelle adresse mail et deux mots de passe similaires et corrects
+5 - KO - Connecter ce nouvel utilisateur via la page login sans cliquer sur le lien de l'email d'activation
+6 - OK - Connecter ce nouvel utilisateur en cliquant sur le lien de l'email d'activation
+7 - KO - Créer un nouvel utilisateur avec une adresse mail existante
+
+8 - KO - Uploader un document pdf + envoyer
+9 - KO - Uploader un document pdf + choisir une image de fond + envoyer
+10 - KO - Uploader une image + envoyer
+11 - KO - Uploader une image + choisir une image de fond + envoyer
+12 - OK - Choisir une image de fond + uploader une image + envoyer
+13 - KO - Faire un snapshot + envoyer
+14 - OK - Faire un snapshot + choisir une image de fond + envoyer
+15 - OK - Choisir une image de fond + faire un snapshot + envoyer
+
+16 - OK - Poster 3 images et en supprimer une, puis deux
+17 - OK - Se déconnecter et aller sur l'autre profil
+18 - OK - liker l'image postée par l'autre profil
+19 - OK - Poster 4 commentaires, puis enlever le deuxième, le dernier, puis le premier
+20 - OK - Checker les mails de l'autre profil pour voir s'il a bien 4 notifications (pour les 4 commentaires)
+
+21 - OK - Switcher d'utilisateur et modifier le profil via la navigation -> annuler la notification par mail et update (quand ton image reçoit un commentaire)
+22 - OK - Revenir sur la page home via le boutton dans la navigation
+23 - OK - Switcher d'utilisateur et vérifier que l'image est toujours bien likée (coeur filled)
+24 - OK - Toujours avec le même utilisateur vérifier que l'image n'a plus qu'un commentaire associé
+25 - OK - Switcher d'utilisateur et liker l'image
+26 - OK - Vérifier qu'au dessus du commentaire il y a marqué 'by <name of the user>'
+27 - OK - Switcher d'utilisateur et vérifier qu'au dessus de la photo il y a 'by <name of the user>'
+28 - OK - Supprimer le seul commentaire de l'image
+29 - OK - Avec le même utilisateur, ajouter un nouveau commentaire à l'image et vérifier que l'auteur de l'image n'est pas notifié par mail
+
+30 - OK - Sur la page login, cliquer sur 'forgot password'
+31 - OK - Mentionner une adresse existante et soumettre
+32 - KO - Aller sur la page login et essayer de se connecter quand même
+33 - OK - Ouvrir les emails et cliquer sur le lien reset password
+34 - KO - Ecrire deux mots de passe incorrects et identiques
+35 - KO - Ecrire deux mots de passe corrects mais différents
+36 - OK - Ecrire deux mots de passe corrects et identiques
+37 - OK - Se log avec le nouveau mdp 
+38 - KO - Recliquer sur forgot password et Mentionner une adresse non existante et soumettre
+
+39 - OK - Se log avec le nouveau mot de passe
+40 - KO - Aller sur la page profil et changer l'adresse mail pour une adresse existante dans la bdd
+41 - OK - changer l'adresse mail pour une nouvelle adresse
+
+42 - OK - Cliquer sur logout
+43 - OK - Accéder à localhost:8080/
+44 - OK - Accéder à localhost:8080/home/index.php
+45 - KO 404 - Accéder à localhost:8080/DoesNotExist
+46 - KO 404 - Accéder à localhost:8080/home/DoesNotExist.php

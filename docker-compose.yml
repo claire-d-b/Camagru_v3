@@ -1,0 +1,51 @@
+services:
+  postgres:
+    build: ./initdb
+    container_name: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: $POSTGRES_DATABASE
+    env_file:
+      - .env
+    #volumes:
+      #- ./initdb/docker-entrypoint.sh:/docker-entrypoint.sh
+      #- ./initdb/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+  php:
+    build: ./php
+    container_name: php
+    restart: always
+    ports:
+      - 9000:9000
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    volumes:
+      - web-pages:/var/www/html
+      - web-src-images:/var/www/html/src/images
+  web:
+    build: ./web
+    container_name: web
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - php
+    env_file:
+      - .env
+    volumes:
+    - web-pages:/var/www/html
+    - web-src-images:/var/www/html/src/images
+    # Creating persistent volumes in Docker Compose is essential for data persistence beyond the lifespan of containers.
+    # This is particularly important for stateful applications like databases, where you need to ensure that the data survives container restarts and rebuilds.
+    # Here we have made ownership of var/www/html by nginx persistent.
+
+volumes:
+  web-pages:
+    driver: local
+  web-src-images:
+    driver: local
