@@ -244,7 +244,7 @@ function display_comments($pdo, $id_picture, $userid) {
   $comments = fetch_comments($pdo, $id_picture);
   
   if ($comments && count($comments)): ?>
-    <div style="display: flex; flex-direction: column; width: 100%; height: 100%; border-radius: 5px; margin-top: 15px;  gap: 0.5em;">
+    <div style="display: flex; flex-direction: column; padding: 10px; width: 100%; height: auto; overflow-y: scroll; border-radius: 5px; gap: 0.5em; background-color: #B6D0E2;">
 
     <?php if (isset($userid) && isset($_POST['del_comment']) && isset($comments) && $comments[$_POST['del_comment']]['user_id'] == $userid):
       $del = $comments[$_POST['del_comment']]['id'];
@@ -254,7 +254,7 @@ function display_comments($pdo, $id_picture, $userid) {
       $data_del->bindParam(1, $del);
       $data_del->execute();
       $comments = fetch_comments($pdo, $id_picture);
-      endif; ?>
+    endif; ?>
 
     <?php for( $j = 0; $j < count($comments); $j++ ):
       $delname = $j;
@@ -278,8 +278,8 @@ function display_comments($pdo, $id_picture, $userid) {
       <?php endif; ?>
     <?php endfor; ?>
   </div>
-  <?php endif; ?>
-<?php }
+  <?php endif;
+}
 
 // The below html is displayed only when current user tries to access the index of the website
 if (!(strcmp($_SERVER['REQUEST_URI'], '/')) || !(strcmp($_SERVER['REQUEST_URI'], '/index.php'))): ?>

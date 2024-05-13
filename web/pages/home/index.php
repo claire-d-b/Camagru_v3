@@ -264,7 +264,7 @@
         </div>
       </div>
     <?php endif;
-      echo ((is_not_logged() == false)) ? '<div style="display: flex; align-items: center; flex-direction: column; overflow: scroll; height: 80%; width: 25%; padding-bottom: 40px; padding-top: 40px; padding-left: 20px; padding-right: 20px;">'
+      echo ((is_not_logged() == false)) ? '<div style="display: flex; align-items: center; flex-direction: column; overflow: scroll; height: 100%; width: 25%; padding-bottom: 40px; padding-top: 40px; padding-left: 20px; padding-right: 20px;">'
       : '<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2em; overflow: scroll; height: 80%; width: 100%; padding-bottom: 40px; padding-top: 40px; padding-left: 20px; padding-right: 20px;">';
     
       // Below we display all users pictures with ability to like and comment them
