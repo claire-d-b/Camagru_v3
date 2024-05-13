@@ -11,8 +11,9 @@
     $name = $_POST['username'];
 
     // Checks whether profile is activated (link in email has been clicked)
-    $get_profile = "SELECT * FROM profile WHERE username = '$name';";
+    $get_profile = "SELECT * FROM profile WHERE username = (?);";
     $datas_profile = $pdo->prepare($get_profile);
+    $datas_profile->bindParam(1, $name);
     $datas_profile->execute();
     $data_profile = $datas_profile->fetch(\PDO::FETCH_ASSOC);
 
@@ -34,8 +35,11 @@
           'samesite' => 'Strict'
       ]);
       
-        $sql = "UPDATE profile SET uuid='$uuid' WHERE username = '$name';";
-        $pdo->prepare($sql)->execute();
+        $sql = "UPDATE profile SET uuid=(?) WHERE username = (?);";
+        $profile_id = $pdo->prepare($sql);
+        $profile_id->bindParam(1, $uuid);
+        $profile_id->bindParam(2, $name);
+        $profile_id->execute();
         header("Location: http://localhost:8080/home/index.php");
         // generer uuid à stocker dans la db doit etre changé à chaque connexion si le cookie existe la pers est connectée, ici genere un id de 23 char
         }

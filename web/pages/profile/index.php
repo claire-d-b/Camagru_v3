@@ -7,8 +7,9 @@
 
     $pdo = connect();
 
-    $get_profile = "SELECT * FROM profile WHERE uuid = '$uuid'";
+    $get_profile = "SELECT * FROM profile WHERE uuid = (?)";
     $data = $pdo->prepare($get_profile);
+    $data->bindParam(1, $uuid);
     $data->execute();
     $profile = $data->fetch(\PDO::FETCH_ASSOC);
 
@@ -33,37 +34,54 @@
         if (isset($_POST['change_fn']) && ctype_space($_POST['change_fn']) == false
         && strcmp($_POST['change_fn'], '') && validate_input($_POST['change_fn'], 0) == true):
             $new = $_POST['change_fn'];
-            $sql = "UPDATE profile SET firstname='$new' WHERE uuid = '$uuid'";
-            $pdo->prepare($sql)->execute();
+            $sql = "UPDATE profile SET firstname=(?) WHERE uuid = (?)";
+            $req = $pdo->prepare($sql);
+            $req->bindParam(1, $new);
+            $req->bindParam(2, $uuid);
+            $req->execute();
             $start = false;
+            header('Refresh: 0');
 
         endif;
         if (isset($_POST['change_sn']) && ctype_space($_POST['change_sn']) == false
         && strcmp($_POST['change_sn'], '') && validate_input($_POST['change_sn'], 0) == true):
             $new = $_POST['change_sn'];
-            $sql = "UPDATE profile SET surname='$new' WHERE uuid = '$uuid'";
-            $pdo->prepare($sql)->execute();
+            $sql = "UPDATE profile SET surname=(?) WHERE uuid = (?)";
+            $req = $pdo->prepare($sql);
+            $req->bindParam(1, $new);
+            $req->bindParam(2, $uuid);
+            $req->execute();
             $start = false;
+            header('Refresh: 0');
 
         endif;
         if (isset($_POST['change_mail']) && ctype_space($_POST['change_mail']) == false
         && strcmp($_POST['change_mail'], '') && validate_input($_POST['change_mail'], 1) == true):
             $new = $_POST['change_mail'];
-            $get_mail_req = "SELECT username FROM profile WHERE uuid = '$uuid';";
+            $get_mail_req = "SELECT username FROM profile WHERE uuid = (?);";
             $get_mail = $pdo->prepare($get_mail_req);
+            $get_mail->bindParam(1, $uuid);
             $get_mail->execute();
             $mail_data = $get_mail->fetch(\PDO::FETCH_ASSOC);
             if (strcmp($mail_data['username'], $new)):
-                $sql = "UPDATE profile SET username='$new' WHERE uuid = '$uuid'";
-                $pdo->prepare($sql)->execute();
-                $unset_activated = "UPDATE profile SET activated=0 WHERE uuid = '$uuid'";
-                $pdo->prepare($unset_activated)->execute();
-                
+                $sql = "UPDATE profile SET username=(?) WHERE uuid = (?)";
+                $req_pass = $pdo->prepare($sql);
+                $req_pass->bindParam(1, $new);
+                $req_pass->bindParam(2, $uuid);
+                $req_pass->execute();
+                $unset_activated = "UPDATE profile SET activated=(?) WHERE uuid = (?)";
+                $req_act = $pdo->prepare($unset_activated);
+                $zero = 0;
+                $req_act->bindParam(1, $zero);
+                $req_act->bindParam(2, $uuid);
+                $req_act->execute();
+
                 $token = $uuid;
                 $ref = 'http://localhost:8080/activate/index.php';
                 send_mail($new, "Email verification", "Confirm your email", "<div>Please click on this link confirm your email: <a href=$ref>$token?activate=true</a></div>");
                 $start = false;
             endif;
+            header('Refresh: 0');
 
         endif;
 
@@ -72,8 +90,10 @@
         <?php else:
             $notif_bool = 'f';
         endif;
-        $notified = "UPDATE profile SET notify='$notif_bool' WHERE uuid = '$uuid';";
+        $notified = "UPDATE profile SET notify=(?) WHERE uuid = (?);";
         $set_notify = $pdo->prepare($notified);
+        $set_notify->bindParam(1, $notif_bool);
+        $set_notify->bindParam(2, $uuid);
         $set_notify->execute();
         $start = false;
 
@@ -88,8 +108,11 @@
         && validate_input($_POST['change_pwd0'], 2) == true
         && password_verify($_POST['change_pwd0'], $validpass)):
             $new_pass = password_hash($_POST['change_pwd2'], PASSWORD_BCRYPT);
-            $sql = "UPDATE profile SET validpass='$new_pass' WHERE uuid = '$uuid'";
-            $pdo->prepare($sql)->execute();
+            $sql = "UPDATE profile SET validpass=(?) WHERE uuid = (?)";
+            $req_pwd = $pdo->prepare($sql);
+            $req_pwd->bindParam(1, $new_pass);
+            $req_pwd->bindParam(2, $uuid);
+            $req_pwd->execute();
             $start = false;
         elseif (isset($_POST['change_pwd2']) && isset($_POST['change_pwd1']) && isset($_POST['change_pwd0']) &&
         ctype_space($_POST['change_pwd2']) == false && ctype_space($_POST['change_pwd1']) == false && ctype_space($_POST['change_pwd0']) == false

@@ -1,4 +1,4 @@
-docker-compose down -v
+docker compose down -v
 docker stop $(docker ps -aq)
 docker rm $(docker ps -aq)
 docker rmi $(docker images -q)

@@ -54,7 +54,7 @@ const setBase64Image = (src) => {
       }
     
       const isFirefox = getBrowserName(navigator.userAgent);
-      console.log(isFirefox);
+      // console.log(isFirefox);
         
       if (isFirefox) {
         navigator.mediaDevices
@@ -69,7 +69,7 @@ const setBase64Image = (src) => {
       }
       else {
         navigator.permissions.query({name: 'camera'}).then((permission) => {
-        console.log("camera state", permission.state);
+        // console.log("camera state", permission.state);
         video.srcObject = stream;
         video.play();
       }).catch((err) => {

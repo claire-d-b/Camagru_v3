@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <?php
 
+error_reporting(E_ALL);
+
 // SECURITY :
 // Control input
 // Mark cookies as HTTPOnly and Secure to ensure they are not accessible via
@@ -51,12 +53,7 @@ function connect () {
 // type 0 = standard, type 1 = email, type 2 = password
 function validate_input($str, $type) {
   $data = trim($str);
-  $data = stripslashes($data);
-  if (!$type)
-    $data = htmlspecialchars($data);
-  if (!$type && !preg_match("/^[a-zA-Z ]*$/", $data))
-    return false;
-  else if ($type == 2 && meet_pass_requirements($data) == false)
+  if ($type == 2 && meet_pass_requirements($data) == false)
     return false;
   return true;
 }
@@ -67,8 +64,9 @@ function is_not_logged () {
     $cookie = $_COOKIE['cookies'];
   else $cookie = null;
   $pdo = connect();
-  $sql = "SELECT activated FROM profile WHERE uuid = '$cookie';";
+  $sql = "SELECT activated FROM profile WHERE uuid = (?);";
   $data = $pdo->prepare($sql);
+  $data->bindParam(1, $cookie);
   $data->execute();
   $get_activated = $data->fetch(\PDO::FETCH_ASSOC);
   if (isset($get_activated['activated']) && !$get_activated['activated'])
@@ -82,8 +80,9 @@ function is_not_logged () {
 function logout () {
   $cookie = $_COOKIE['cookies'];
   $pdo = connect();
-  $sql = "SELECT activated FROM profile WHERE uuid = '$cookie';";
+  $sql = "SELECT activated FROM profile WHERE uuid = (?);";
   $data = $pdo->prepare($sql);
+  $data->bindParam(1, $cookie);
   $data->execute();
   $get_activated = $data->fetch(\PDO::FETCH_ASSOC);
   if (isset($get_activated['activated']) && $get_activated['activated'] == 0)
@@ -121,14 +120,18 @@ function meet_pass_requirements($pass) {
 // Function that makes changes in the database when current user presses on the like button of a picture
 function post_like($pdo, $user_id, $author, $id_picture, $date, $likename) {
 
-  $sql = "SELECT * FROM likes WHERE author = '$author' AND picture_id = '$id_picture';";
+  $sql = "SELECT * FROM likes WHERE author = (?) AND picture_id = (?);";
   $data = $pdo->prepare($sql);
+  $data->bindParam(1, $author);
+  $data->bindParam(2, $id_picture);
   $data->execute();
   $like = $data->fetch(\PDO::FETCH_ASSOC);
   if (isset($_POST[$likename])):
     if (isset($like['id'])):
-    $reqDel = "DELETE FROM likes WHERE picture_id = '$id_picture';";
-    $pdo->prepare($reqDel)->execute();
+    $reqDel = "DELETE FROM likes WHERE picture_id = (?);";
+    $del = $pdo->prepare($reqDel);
+    $del->bindParam(1, $id_picture);
+    $del->execute();
     return 0; ?>
     <?php else:
       $reqInsert = "INSERT INTO likes(user_id, picture_id, author, created_on) VALUES (?,?,?,?);";
@@ -205,15 +208,17 @@ function post_comment($mail_author, $pdo, $user_id, $author, $id_picture, $date,
     $data->execute();
 
     // sends email if notify option is set as true
-    $picture_req = "SELECT * FROM picture WHERE id = '$id_picture';";
+    $picture_req = "SELECT * FROM picture WHERE id = (?);";
     $picture_res = $pdo->prepare($picture_req);
+    $picture_res->bindParam(1, $id_picture);
     $picture_res->execute();
 
     $picture = $picture_res->fetch(\PDO::FETCH_ASSOC);
     $send_to = $picture['user_id'];
 
-    $mail_req = "SELECT * FROM profile WHERE id = '$send_to';";
+    $mail_req = "SELECT * FROM profile WHERE id = (?);";
     $mail_res = $pdo->prepare($mail_req);
+    $mail_res->bindParam(1, $send_to);
     $mail_res->execute();
 
     $send_to_mail = $mail_res->fetch(\PDO::FETCH_ASSOC);
@@ -226,8 +231,9 @@ function post_comment($mail_author, $pdo, $user_id, $author, $id_picture, $date,
 
 // Function that returns comments in the form of an array with key/value pairs at array[0], array[1] etc.
 function fetch_comments($pdo, $id_picture) {
-  $reqcomment = "SELECT * FROM comments WHERE picture_id = '$id_picture';";
+  $reqcomment = "SELECT * FROM comments WHERE picture_id = (?);";
   $data = $pdo->prepare($reqcomment);
+  $data->bindParam(1, $id_picture);
   $data->execute();
   $comments = $data->fetchAll();
   return $comments;
@@ -238,13 +244,15 @@ function display_comments($pdo, $id_picture, $userid) {
   $comments = fetch_comments($pdo, $id_picture);
   
   if ($comments && count($comments)): ?>
-    <div style="dsplay: flex; flex-direction: column; width: 100%; height: 100%; overflow: scroll; border-radius: 5px; margin-top: 15px;  gap: 0.5em;">
+    <div style="display: flex; flex-direction: column; width: 100%; height: 100%; border-radius: 5px; margin-top: 15px;  gap: 0.5em;">
 
-    <?php if (isset($userid) && isset($_POST['del_comment']) && $comments[$_POST['del_comment']]['user_id'] == $userid):
+    <?php if (isset($userid) && isset($_POST['del_comment']) && isset($comments) && $comments[$_POST['del_comment']]['user_id'] == $userid):
       $del = $comments[$_POST['del_comment']]['id'];
 
-      $reqDel = "DELETE FROM comments WHERE id = $del;";
-      $pdo->prepare($reqDel)->execute();
+      $reqDel = "DELETE FROM comments WHERE id = (?);";
+      $data_del = $pdo->prepare($reqDel);
+      $data_del->bindParam(1, $del);
+      $data_del->execute();
       $comments = fetch_comments($pdo, $id_picture);
       endif; ?>
 
@@ -253,7 +261,7 @@ function display_comments($pdo, $id_picture, $userid) {
 
       if ($comments[$j]["picture_id"] == $id_picture): ?>
 
-        <div style="padding: 20px; align-self: center; gap: 0.5em;">
+        <div style="padding: 20px; align-self: center; gap: 0.5em; width: 100%;">
 
           <?php $comment_author = (isset($userid) && $comments[$j]['user_id'] == $userid) ? 'you' : $comments[$j]['author']; ?>
             <form action='' method='post' style='display: flex; width: 100%; justify-content: space-between;'>
@@ -265,7 +273,7 @@ function display_comments($pdo, $id_picture, $userid) {
           <?php endif; ?>
           </form>
           <?php $comment_content = $comments[$j]['content']; ?>
-          <div style='margin-top: 5px; font-size: 12px; width: 100%; color: #7393B3; padding: 4px; border: 1px solid #7393B3; border-radius: 5px; overflow: scroll;'><?php echo $comment_content ?></div>
+          <div style='margin-top: 5px; font-size: 12px; color: #7393B3; padding: 4px; border: 1px solid #7393B3; border-radius: 5px; overflow: scroll;'><?php echo $comment_content ?></div>
         </div>
       <?php endif; ?>
     <?php endfor; ?>
@@ -295,9 +303,13 @@ if (strcmp($_SERVER['REQUEST_URI'], '/index.php') && strcmp($_SERVER['REQUEST_UR
 && strcmp($_SERVER['REQUEST_URI'], '/login/index.php') && strcmp($_SERVER['REQUEST_URI'], '/login/') &&
 strcmp($_SERVER['REQUEST_URI'], '/subscribe/index.php') && strcmp($_SERVER['REQUEST_URI'], '/subscribe/')
 && !isset($_COOKIE["cookies"])) {
-  $sql = "UPDATE profile SET uuid=null WHERE uuid != null;";
+  $sql = "UPDATE profile SET uuid=(?) WHERE uuid != (?);";
   $pdo = connect();
-  $pdo->prepare($sql)->execute();
+  $var = null;
+  $u_profile = $pdo->prepare($sql);
+  $u_profile->bindParam(1, $var);
+  $u_profile->bindParam(2, $var);
+  $u_profile->execute();
 } ?>
 
 <!-- Color codes for the website

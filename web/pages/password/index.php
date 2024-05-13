@@ -9,8 +9,9 @@
     $print = false;
     $start = false;
 
-    $sql = "SELECT * FROM profile WHERE uuid = '$uuid'";
+    $sql = "SELECT * FROM profile WHERE uuid = (?)";
     $data = $pdo->prepare($sql);
+    $data->bindParam(1, $uuid);
     $data->execute();
     $get_profile = $data->fetch(\PDO::FETCH_ASSOC);
     $name = $get_profile['firstname'];
@@ -27,8 +28,11 @@
     && (!(strcmp($_POST['change_pwd1'], $_POST['change_pwd2'])))
     && validate_input($_POST['change_pwd1'], 2) == true) {
       $new = password_hash($pass, PASSWORD_BCRYPT);
-      $update_profile = "UPDATE profile SET validpass='$new' WHERE uuid = '$uuid'";
-      $pdo->prepare($update_profile)->execute();
+      $update_profile = "UPDATE profile SET validpass=(?) WHERE uuid = (?)";
+      $up_profile_req = $pdo->prepare($update_profile);
+      $up_profile_req->bindParam(1, $new);
+      $up_profile_req->bindParam(2, $uuid);
+      $up_profile_req->execute();
       $print = false;
       // header("Location: http://localhost:8080/login/index.php");
     }

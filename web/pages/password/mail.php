@@ -20,11 +20,14 @@
           'samesite' => 'Strict'
       ]);
       
-        $sql = "SELECT * FROM profile WHERE username = '$email'";
+        $sql = "SELECT * FROM profile WHERE username = (?)";
         $data = $pdo->prepare($sql);
-        $sql = "UPDATE profile SET uuid='$uuid' WHERE username = '$email';";
-        $pdo->prepare($sql)->execute();
-        $data->execute();
+        $data->bindParam(1, $email);
+        $sql = "UPDATE profile SET uuid=(?) WHERE username = (?);";
+        $profile_set_id = $pdo->prepare($sql);
+        $profile_set_id->bindParam(1, $uuid);
+        $profile_set_id->bindParam(2, $email);
+        $profile_set_id->execute();
         $update_uuid = $data->fetch(\PDO::FETCH_ASSOC);
 
         if ($update_uuid) {
@@ -36,8 +39,11 @@
 
         send_mail($mail, "Forgot password?",  "Reset your password", "<div>Please click on this link to reset your password: <a href='http://localhost:8080/password/index.php'>$token?activate=true</a></div>");
 
-        $del_pass_req = "UPDATE profile  SET validpass=null WHERE username = '$mail';";
+        $del_pass_req = "UPDATE profile  SET validpass=(?) WHERE username = (?);";
         $del_pass_data = $pdo->prepare($del_pass_req);
+        $var = null;
+        $del_pass_data->bindParam(1, $var);
+        $del_pass_data->bindParam(2, $mail);
         $del_pass_data->execute();
 
         // header("Location: http://localhost:8080/login/index.php");

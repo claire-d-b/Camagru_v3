@@ -22,13 +22,15 @@ Postgresql est activé dans ce conteneur en tant qu’extension mentionnée dans
 
 Pour lancer le projet, assurez vous que le client docker tourne.
 Créez un fichier .env à la racine et spécifiez les constantes relatives à la bdd: 
-- PGPASSFILE=
-- PGHOST=
-- PGUSER=
-- PGDATABASE=
-- PGPASSWORD=
-- PGPORT=
-- CAMAGRU_MAIL=
+- POSTRGRES_PASSFILE=
+- POSTRGRES_HOST=
+- POSTRGRES_USER=
+- POSTRGRES_DATABASE=
+- POSTRGRES_PASSWORD=
+# Sous forme d'int et pas de string
+- POSTRGRES_PORT=
+# Changer l'adresse pour une adresse mail qui vous appartient
+- CAMAGRU_MAIL= 'Camagru <your_email@example.com>'
 
 Pour lancer le projet, tapez:
 
