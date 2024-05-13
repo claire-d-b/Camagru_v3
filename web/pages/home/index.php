@@ -61,7 +61,6 @@
             <?php elseif ($error == false):
   
               $final = createBase64FromImageResource($image); // base64 is created to be stored in the database
-            endif;
 
           $uuid = $_COOKIE["cookies"];
 
@@ -87,6 +86,7 @@
           $res->execute();
 
         endif;
+      endif;
 
       // verify if snapshot has been sent
       if (isset($_POST['snapshot_id']) && isset($_POST['chat_nb_snapshot']) && $wallpaper):
