@@ -232,7 +232,7 @@
                     <?php for ($i = 0; $i < 8; $i++):
                         $source[$i] = '../src/images/chat_' . $i+1 . '.png';
                     endfor; ?>
-                    <div style='display: flex; flex-direction: column; align-items: baseline; align-items: baseline;'>
+                    <div style='display: flex; flex-direction: column; align-items: baseline; align-items: baseline; padding: 15px;'>
                     <?php
                     for ($i = 0; $i < 8; $i++):
                       // update background
@@ -256,16 +256,16 @@
                         <?php endif; ?>
                     </form>
                     <?php endfor; ?>
-                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      <?php endif;
-      echo ((is_not_logged() == false)) ? '<div style="display: flex; align-items: center; flex-direction: column; overflow: scroll; height: 80%; width: 25%; padding: 50px;">'
-      : '<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2em; overflow: scroll; height: 80%; width: 100%; padding: 50px;">';
+      </div>
+    <?php endif;
+      echo ((is_not_logged() == false)) ? '<div style="display: flex; align-items: center; flex-direction: column; overflow: scroll; height: 80%; width: 25%; padding-bottom: 40px; padding-top: 40px; padding-left: 20px; padding-right: 20px;">'
+      : '<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2em; overflow: scroll; height: 80%; width: 100%; padding-bottom: 40px; padding-top: 40px; padding-left: 20px; padding-right: 20px;">';
     
       // Below we display all users pictures with ability to like and comment them
       if (isset($pictures) && count($pictures)):
@@ -309,20 +309,20 @@
 
               if (isset($pictures[$i]['user_id']) && $pictures[$i]['user_id'] == $user_id): // checks whether the picture has been created by current user and add trash button if so ?>
                 <form action="" method="post" style="width: 100%; display: flex; align-items: baseline; justify-content: space-between;">
-                  <div style="color: #7393B3; font-weight: lighter; font-size: 12px; padding-top: 15px;">Created by you on <?php echo $created ?></div>
+                  <div style="color: #7393B3; font-weight: lighter; font-size: 12px; padding-top: 15px; padding-bottom: 10px;">Created by you on <?php echo $created ?></div>
                   <button name=<?php echo $delname?> type="submit">
                     <svg xmlns="http://www.w3.org/2000/svg" height="1.25em" fill="#7393B3" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M170.5 51.6L151.5 80h145l-19-28.4c-1.5-2.2-4-3.6-6.7-3.6H177.1c-2.7 0-5.2 1.3-6.7 3.6zm147-26.6L354.2 80H368h48 8c13.3 0 24 10.7 24 24s-10.7 24-24 24h-8V432c0 44.2-35.8 80-80 80H112c-44.2 0-80-35.8-80-80V128H24c-13.3 0-24-10.7-24-24S10.7 80 24 80h8H80 93.8l36.7-55.1C140.9 9.4 158.4 0 177.1 0h93.7c18.7 0 36.2 9.4 46.6 24.9zM80 128V432c0 17.7 14.3 32 32 32H336c17.7 0 32-14.3 32-32V128H80zm80 64V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16z"/></svg>
                   </button>
                 </form>
-              <?php else: ?>
-                <div style="color: #7393B3; font-weight: lighter; font-size: 14px; padding-top: 15px;">Created by <?php echo $name ?> on <?php echo $created ?></div>
-              <?php endif;
-            endif; ?>
+              <?php endif; ?>
+            <?php else: ?>
+              <div style="color: #7393B3; font-weight: lighter; font-size: 14px; padding-top: 15px; padding-bottom: 10px;">Created by <?php echo $name ?> on <?php echo $created ?></div>
+            <?php endif; ?>
               
-            <div style="display: flex; flex-direction: column; gap: 0.5em;">
+            <div style="display: flex; flex-direction: column; gap: 0.5em; height: 80%; width: 100%; align-items: center;">
               <?php // echo $pictures[$i]['img'] ?>
               <img style="border-radius: 10px;" width="200px" height="150px" src="data:image/png;base64,<?php echo $pictures[$i]['img'] ?>" />
-              <?php $nb = $i+1; echo "<div style='width: 100%; align-self: center; padding: 5px; color: #7393B3; font-weight: lighter; font-size: 14px;'>$nb" ?>
+              <?php $nb = $i+1; echo "<div style='width: 100%; display: flex; justify-content: center; padding: 5px; color: #7393B3; font-weight: lighter; font-size: 14px;'>$nb" ?>
             </div>
             <?php if (is_not_logged() == false): ?>
               <div style="align-self: flex-end;">
@@ -340,22 +340,23 @@
                 <input name=<?php echo $commentname ?> type="text" placeholder="Type your comment here..." style="width: 100%; border-radius: 5px; border: 1px solid #7393B3;">
                 <div><button name=<?php echo $sendcommentname ?> type="submit" style="color: white; padding: 4px; border: 1px solid #7393B3; color: #7393B3; background: white; border-radius: 5px; box-shadow: 0px -2px 3px #808b96;">submit</button></input></div>
               </form>
-            <?php endif; ?>
+            <?php endif;
+          endif; ?>
           <?php if (isset($user_id)): display_comments($pdo, $id_picture, $user_id); else: display_comments($pdo, $id_picture, null); endif; ?>
-          <?php if (is_not_logged() == false): ?>
-            </div>
-        <?php endif;
-        endif;
-      endfor; ?>
-    <?php else: ?>
-      <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; color: #7393b3;">No picture available.</div>
-    <?php endif; ?>
+          </div>
+        <?php endfor; ?>
+        <?php else: ?>
+          <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; color: #7393b3;">No picture available.</div>
+        <?php endif; ?>
+        </div>
       </div>
     </div>
   </body>
-  <footer style="height: 50px; position: fixed; bottom: 0px; margin: 0; background-color: white; width: 100%; display: flex; align-items: center; justify-content: center; box-shadow: 0px -2px 3px #808b96;">
   <?php if (is_not_logged() == false): ?>
+  <footer style="height: 50px; position: fixed; bottom: 0px; margin: 0; background-color: white; width: 100%; display: flex; align-items: center; justify-content: center; box-shadow: 0px -2px 3px #808b96;">
     <a style="background-color: #7393B3; text-decoration: none; color: white; border: 1px solid white; border-radius: 5px; padding: 4px;" href="http://localhost:8080/logout/index.php">Log out</a>
-  <?php endif; ?>
   </footer>
+  <?php else: ?>
+    <footer style="height: 50px; position: fixed; bottom: 0px; margin: 0; background-color: white; width: 100%; display: flex; align-items: center; justify-content: center; box-shadow: 0px -2px 3px #808b96;"></footer>
+  <?php endif; ?>
 </html>
