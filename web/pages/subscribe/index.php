@@ -28,7 +28,7 @@
     // If both passwords match and meet requirements, activate profile via email.
     // Try and catch used here to avoid errors such as a non-unique key (email for example.)
     if (!(strcmp($_POST['password1'], $_POST['password2']))) {
-      if (validate_input($_POST['password1'], 1) == true) {
+      if (validate_input($_POST['password1'], 2) == true) {
           $uuid = uniqid('', true);
           // setcookie("cookies", $uuid, time()+60*60, '/');
           setcookie("cookies", $uuid, [
