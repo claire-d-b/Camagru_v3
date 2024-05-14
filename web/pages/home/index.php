@@ -176,7 +176,9 @@
       </div>
     </div>
   </head>
-  <body id="camera-body" style="margin: 0; font-family: system-ui; width: 100%; height: 100%; overflow: hidden;">
+  <body id="camera-body" echo <?php (is_not_logged() == false) ?
+  'style="margin: 0; font-family: system-ui; width: 100%; height: 100%; overflow: hidden;"'
+  : 'style="margin: 0; font-family: system-ui; width: 100%; height: 100%; overflow: scroll;"' ?> >
     <?php if (is_not_logged() == false): ?>
       <div id="container" style="display: flex; flex-direction: column; width: 100%; height: 100%;">
         <div style="display: flex; flex-direction: row; width: 100%; height: 100%;">
@@ -267,8 +269,11 @@
         </div>
       </div>
     <?php endif;
-      echo ((is_not_logged() == false)) ? '<div style="display: flex; align-items: center; flex-direction: column; overflow: scroll; height: 100%; width: 25%; padding-bottom: 40px; padding-top: 40px; padding-left: 20px; padding-right: 20px;">'
-      : '<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2em; overflow: scroll; height: 80%; width: 100%; padding-bottom: 40px; padding-top: 40px; padding-left: 20px; padding-right: 20px;">';
+      echo ((is_not_logged() == false)) ?
+      '<div style="width: 25%; height: 80%;">
+        <div style="display: flex; align-items: center; flex-direction: column; overflow: scroll; height: 100%; width: 80%; padding-bottom: 40px; padding-top: 40px; padding-left: 20px; padding-right: 20px;">'
+      : '<div style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 40px; padding-bottom: 40px;">
+      <div style="gap: 2em; overflow: scroll; height: 100%; width: 100%; padding-left: 20px; padding-right: 20px;">';
     
       // Below we display all users pictures with ability to like and comment them
       if (isset($pictures) && count($pictures)):
@@ -319,14 +324,14 @@
                 </form>
               <?php endif; ?>
             <?php else: ?>
-              <div style="color: #7393B3; font-weight: lighter; font-size: 14px; padding-top: 15px; padding-bottom: 10px;">Created by <?php echo $name ?> on <?php echo $created ?></div>
+              <div style="display: flex; justify-content: center; color: #7393B3; font-weight: lighter; font-size: 14px; padding-top: 15px; padding-bottom: 10px;">Created by <?php echo $name ?> on <?php echo $created ?></div>
             <?php endif; ?>
               
-            <div style="display: flex; flex-direction: column; gap: 0.5em; height: 80%; width: 100%; align-items: center;">
+            <div style="display: flex; flex-direction: column; gap: 0.5em; width: 100%; align-items: center; justify-content: center;">
               <?php // echo $pictures[$i]['img'] ?>
               <img style="border-radius: 10px;" width="200px" height="150px" src="data:image/png;base64,<?php echo $pictures[$i]['img'] ?>" />
-              <?php $nb = $i+1; echo "<div style='width: 100%; display: flex; justify-content: center; padding: 5px; color: #7393B3; font-weight: lighter; font-size: 14px;'>$nb" ?>
-            </div>
+              <?php $nb = $i+1; echo "<div style='width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 5px; color: #7393B3; font-weight: lighter; font-size: 14px;'>$nb" ?>
+            <!-- </div> -->
             <?php if (is_not_logged() == false): ?>
               <div style="align-self: flex-end;">
                 <form action="" method="post" style="display: flex; justify-content: center;">
@@ -347,11 +352,12 @@
           endif; ?>
           <?php if (isset($user_id)): display_comments($pdo, $id_picture, $user_id); else: display_comments($pdo, $id_picture, null); endif; ?>
           </div>
-        <?php endfor; ?>
-        <?php else: ?>
-          <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; color: #7393b3;">No picture available.</div>
-        <?php endif; ?>
         </div>
+        <?php endfor; ?>
+      <?php else: ?>
+        <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; color: #7393b3;">No picture available.</div>
+      <?php endif; ?>
+      </div></div>
       </div>
     </div>
   </body>

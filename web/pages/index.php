@@ -261,7 +261,7 @@ function display_comments($pdo, $id_picture, $userid) {
 
       if ($comments[$j]["picture_id"] == $id_picture): ?>
 
-        <?php echo (is_not_logged() == false) ? '<div style="padding: 20px; align-self: center; gap: 0.5em; width: 100%; height: 100%;">' : '<div style="padding: 20px; align-self: center; gap: 0.5em; width: 25%;">' ?>
+        <?php echo (is_not_logged() == false) ? '<div style="padding: 20px; align-self: center; gap: 0.5em; width: 100%; height: 100%;">' : '<div style="align-self: center; gap: 0.5em; width: 25%;">' ?>
 
           <?php $comment_author = (isset($userid) && $comments[$j]['user_id'] == $userid) ? 'you' : $comments[$j]['author']; ?>
             <form action='' method='post' style='display: flex; width: 100%; justify-content: space-between;'>
