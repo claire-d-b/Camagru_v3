@@ -26,9 +26,11 @@
         $date = date_format(date_create("now"), 'Y-M-d H:i:s');
 
         // Reset wallpaper at the beginning
-        $del_wp_req = "UPDATE profile SET wallpaper=null where username = (?);";
+        $del_wp_req = "UPDATE profile SET wallpaper=(?) where username = (?);";
         $del_wp = $pdo->prepare($del_wp_req);
-        $del_wp->bindParam(1, $author);
+        $null = null;
+        $del_wp->bindParam(1, $null);
+        $del_wp->bindParam(2, $author);
         $del_wp->execute();
 
         // verify if a file has been sent and is really a file
@@ -114,8 +116,9 @@
         $uuid = $_COOKIE["cookies"];
 
         // select current user and update 'user' in picture table
-        $sql = "SELECT * FROM profile WHERE uuid = '$uuid'";
+        $sql = "SELECT * FROM profile WHERE uuid = (?)";
         $data = $pdo->prepare($sql);
+        $data->bindParam(1, $uuid);
         $data->execute();
         $get_profile = $data->fetch(\PDO::FETCH_ASSOC);
         $username = $get_profile['id'];
