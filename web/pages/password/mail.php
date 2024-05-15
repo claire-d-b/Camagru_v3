@@ -30,7 +30,7 @@
         $profile_set_id->execute();
         $update_uuid = $data->fetch(\PDO::FETCH_ASSOC);
 
-        if ($update_uuid) {
+        if (isset($update_uuid)) {
         $name = $update_uuid['firstname'];
         $surname = $update_uuid['surname'];
         $mail = $update_uuid['username'];
