@@ -16,7 +16,7 @@
 15 - OK - Choisir une image de fond + faire un snapshot + envoyer
 
 16 - OK - Poster 3 images et en supprimer une, puis deux
-17 - OK - Se déconnecter et aller sur l'autre profil * createdby
+17 - OK - Se déconnecter et aller sur l'autre profil
 18 - OK - liker l'image postée par l'autre profil
 19 - OK - Poster 4 commentaires, puis enlever le deuxième, le dernier, puis le premier
 20 - OK - Checker les mails de l'autre profil pour voir s'il a bien 4 notifications (pour les 4 commentaires)
@@ -27,7 +27,7 @@
 24 - OK - Toujours avec le même utilisateur vérifier que l'image n'a plus qu'un commentaire associé
 25 - OK - Switcher d'utilisateur et liker l'image
 26 - OK - Vérifier qu'au dessus du commentaire il y a marqué 'by <name of the user>'
-27 - OK - Switcher d'utilisateur et vérifier qu'au dessus de la photo il y a 'by <name of the user>' *
+27 - OK - Switcher d'utilisateur et vérifier qu'au dessus de la photo il y a 'by <name of the user>'
 28 - OK - Supprimer le seul commentaire de l'image * background-color
 29 - OK - Avec le même utilisateur, ajouter un nouveau commentaire à l'image et vérifier que l'auteur de l'image n'est pas notifié par mail
 
