@@ -12,7 +12,7 @@
 
     $uuid = $_COOKIE["cookies"]; // get current user info
     
-    if ($uuid):
+    if (isset($uuid)):
       $req = "SELECT * FROM profile WHERE uuid = (?)";
       $data_snap = $pdo->prepare($req);
       $data_snap->bindParam(1, $uuid);
