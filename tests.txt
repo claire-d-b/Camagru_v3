@@ -6,7 +6,7 @@
 6 - OK - Connecter ce nouvel utilisateur en cliquant sur le lien de l'email d'activation
 7 - KO - Créer un nouvel utilisateur avec une adresse mail existante
 
-8 - KO - Uploader un document pdf + envoyer *
+8 - KO - Uploader un document pdf + envoyer
 9 - KO - Uploader un document pdf + choisir une image de fond + envoyer
 10 - KO - Uploader une image + envoyer
 11 - KO - Uploader une image + choisir une image de fond + envoyer

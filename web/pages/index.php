@@ -3,7 +3,6 @@
 
 // error_reporting(E_ALL);
 error_reporting(E_ERROR | E_PARSE);
-
 // SECURITY :
 // Control input
 // Mark cookies as HTTPOnly and Secure to ensure they are not accessible via

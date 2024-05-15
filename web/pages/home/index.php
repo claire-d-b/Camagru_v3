@@ -12,7 +12,7 @@
 
     $uuid = $_COOKIE["cookies"]; // get current user info
     
-    if (isset($uuid)):
+    if ($uuid):
       $req = "SELECT * FROM profile WHERE uuid = (?)";
       $data_snap = $pdo->prepare($req);
       $data_snap->bindParam(1, $uuid);
@@ -40,34 +40,75 @@
             $bg = imagecreatefromstring($wallp);
   
           endif;
-            $file_tmp = $_FILES['image']['tmp_name'][0];
-            $imagedata = file_get_contents($file_tmp);
+          $file_tmp = $_FILES['image']['tmp_name'][0];
+          $imagedata = file_get_contents($file_tmp);
 
-            if (is_string($imagedata) == true):
-              if (($image = imagecreatefromstring($imagedata)) == false): // sets error when we are not dealijng with a picture
-                $error = true;
-              endif; ?>
-            <?php else:
+          if (($image = imagecreatefromstring($imagedata)) == false): // sets error when we are not dealing with a picture
               $error = true;
-            endif;
-  
-            if ($error == false && $wallpaper):
-              // Get the dimensions of the SVG image
-              $svgWidth = imagesx($bg);
-              $svgHeight = imagesy($bg);
-  
-              // Get the dimensions of the token image
-              $imageWidth = imagesx($image);
-              $imageHeight = imagesy($image);
-  
-              // Copy the PNG image onto the base image
-              imagecopyresized($image, $bg, 0, 0, 0, 0, $imageWidth, $imageHeight, $svgWidth, $svgHeight);
-  
-              $final = createBase64FromImageResource($image); // base64 is created to be stored in the database ?>
-  
-            <?php elseif ($error == false):
-  
-              $final = createBase64FromImageResource($image); // base64 is created to be stored in the database
+          endif;
+
+          if ($error == false && $wallpaper):
+            // Get the dimensions of the SVG image
+            $svgWidth = imagesx($bg);
+            $svgHeight = imagesy($bg);
+
+            // Get the dimensions of the token image
+            $imageWidth = imagesx($image);
+            $imageHeight = imagesy($image);
+
+            // Copy the PNG image onto the base image
+            imagecopyresized($image, $bg, 0, 0, 0, 0, $imageWidth, $imageHeight, $svgWidth, $svgHeight); ?>
+          <?php endif;
+          if ($error == false):
+            $final = createBase64FromImageResource($image); // base64 is created to be stored in the database
+          
+            $uuid = $_COOKIE["cookies"];
+
+            // select current user and update 'user' in picture table
+            $sql = "SELECT * FROM profile WHERE uuid = (?)";
+            $data = $pdo->prepare($sql);
+            $data->bindParam(1, $uuid);
+            $data->execute();
+            $get_profile = $data->fetch(\PDO::FETCH_ASSOC);
+            $username = $get_profile['id'];
+            $author = $get_profile['firstname'];
+            $date = date_format(date_create("now"), 'Y-M-d H:i:s');
+            $title = "picture_".$username;
+
+            // insert picture with relevant information
+            $req = "INSERT INTO picture(title, user_id, author, img, created_on) VALUES (?,?,?,?,?)";
+            $res = $pdo->prepare($req);
+            $res->bindParam(1, $title);
+            $res->bindParam(2, $username);
+            $res->bindParam(3, $author);
+            $res->bindParam(4, $final);
+            $res->bindParam(5, $date);
+            $res->execute();
+          endif;
+        endif;
+
+        // verify if snapshot has been sent
+        if (isset($_POST['snapshot_id']) && isset($_POST['chat_nb_snapshot']) && $wallpaper):
+
+          $photo = $_POST['snapshot_id'];
+
+          $imagedata1 = file_get_contents($wallpaper);
+          $imagedata2 = file_get_contents($photo);
+          $image1 = imagecreatefromstring($imagedata1);
+          $image2 = imagecreatefromstring($imagedata2);
+
+          // Get the dimensions of the SVG image
+          $svgWidth = imagesx($image1);
+          $svgHeight = imagesy($image1);
+
+          // Get the dimensions of the token image
+          $imageWidth = imagesx($image2);
+          $imageHeight = imagesy($image2);
+
+          // Copy the PNG image onto the base image
+          imagecopyresized($image2, $image1, 0, 0, 0, 0, $imageWidth, $imageHeight, $svgWidth, $svgHeight);
+
+          $final = createBase64FromImageResource($image2);
 
           $uuid = $_COOKIE["cookies"];
 
@@ -91,56 +132,6 @@
           $res->bindParam(4, $final);
           $res->bindParam(5, $date);
           $res->execute();
-
-        endif;
-      endif;
-
-      // verify if snapshot has been sent
-      if (isset($_POST['snapshot_id']) && isset($_POST['chat_nb_snapshot']) && $wallpaper):
-
-        $photo = $_POST['snapshot_id'];
-
-        $imagedata1 = file_get_contents($wallpaper);
-        $imagedata2 = file_get_contents($photo);
-        $image1 = imagecreatefromstring($imagedata1);
-        $image2 = imagecreatefromstring($imagedata2);
-
-        // Get the dimensions of the SVG image
-        $svgWidth = imagesx($image1);
-        $svgHeight = imagesy($image1);
-
-        // Get the dimensions of the token image
-        $imageWidth = imagesx($image2);
-        $imageHeight = imagesy($image2);
-
-        // Copy the PNG image onto the base image
-        imagecopyresized($image2, $image1, 0, 0, 0, 0, $imageWidth, $imageHeight, $svgWidth, $svgHeight);
-
-        $final = createBase64FromImageResource($image2);
-
-        $uuid = $_COOKIE["cookies"];
-
-        // select current user and update 'user' in picture table
-        $sql = "SELECT * FROM profile WHERE uuid = (?)";
-        $data = $pdo->prepare($sql);
-        $data->bindParam(1, $uuid);
-        $data->execute();
-        $get_profile = $data->fetch(\PDO::FETCH_ASSOC);
-        $username = $get_profile['id'];
-        $author = $get_profile['firstname'];
-        $date = date_format(date_create("now"), 'Y-M-d H:i:s');
-        $title = "picture_".$username;
-
-        // insert picture with relevant information
-        $req = "INSERT INTO picture(title, user_id, author, img, created_on) VALUES (?,?,?,?,?)";
-        $res = $pdo->prepare($req);
-        $res->bindParam(1, $title);
-        $res->bindParam(2, $username);
-        $res->bindParam(3, $author);
-        $res->bindParam(4, $final);
-        $res->bindParam(5, $date);
-        $res->execute();
-
         endif;
       endif;
     endif;
