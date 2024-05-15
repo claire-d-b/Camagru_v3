@@ -1,7 +1,7 @@
 <?php
     require ('../index.php');
 
-    logout();
+//    logout();
 
     $uuid = $_COOKIE["cookies"];
 
@@ -26,21 +26,20 @@
     ctype_space($_POST['change_pwd2']) == false && strcmp($_POST['change_pwd2'], '')
     && ctype_space($_POST['change_pwd1']) == false && strcmp($_POST['change_pwd1'], '')
     && (!(strcmp($_POST['change_pwd1'], $_POST['change_pwd2'])))
-    && validate_input($_POST['change_pwd1'], 2) == true) {
+    && validate_input($_POST['change_pwd1'], 2) == true):
       $new = password_hash($pass, PASSWORD_BCRYPT);
       $update_profile = "UPDATE profile SET validpass=(?) WHERE uuid = (?)";
       $up_profile_req = $pdo->prepare($update_profile);
       $up_profile_req->bindParam(1, $new);
       $up_profile_req->bindParam(2, $uuid);
       $up_profile_req->execute();
-      $print = false;
-      // header("Location: http://localhost:8080/login/index.php");
-    }
-    else $print = true;
-    else if (isset($_POST['change_pwd2']) || isset($_POST['change_pwd1']))
-        $print = true;
-    else
+      $print = false; ?>
+  
+    <?php elseif (isset($_POST['change_pwd2']) || isset($_POST['change_pwd1'])):
+        $print = true; ?>
+    <?php else:
       $start = true;
+    endif;
 ?>
 
 <html dir='ltr' lang='en' style='font-family: system-ui; margin: 0; height: 100%; width: 100%;'>
