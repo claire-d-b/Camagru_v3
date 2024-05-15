@@ -42,12 +42,14 @@
           endif;
             $file_tmp = $_FILES['image']['tmp_name'][0];
             $imagedata = file_get_contents($file_tmp);
-            if (is_string($imagedata)):
+
+            if (is_string($imagedata) == true):
               if (($image = imagecreatefromstring($imagedata)) == false): // sets error when we are not dealijng with a picture
                 $error = true;
               endif; ?>
             <?php else:
               $error = true;
+            endif;
   
             if ($error == false && $wallpaper):
               // Get the dimensions of the SVG image

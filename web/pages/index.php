@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <?php
 
-error_reporting(E_ALL);
+// error_reporting(E_ALL);
+error_reporting(E_ERROR | E_PARSE);
 
 // SECURITY :
 // Control input
