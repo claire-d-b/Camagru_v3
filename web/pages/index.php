@@ -46,18 +46,6 @@ function connect () {
   return $pdo;
 }
 
-// trim Supprime les espaces (ou d'autres caractères) en début et fin de chaîne
-// stripslashes Supprime les antislashs d'une chaîne
-// htmlspecialchars Convert special characters to HTML entities
-// if (!preg_match("/^[a-zA-Z ]*$/", $data)) { only letters and whitespaces
-// type 0 = standard, type 1 = email, type 2 = password
-function validate_input($str, $type) {
-  $data = trim($str);
-  if ($type == 2 && meet_pass_requirements($data) == false)
-    return false;
-  return true;
-}
-
 // Returns true when current user is not logged
 function is_not_logged () {
   if (isset($_COOKIE['cookies']))
@@ -115,6 +103,18 @@ function meet_pass_requirements($pass) {
   preg_match("/[A-Z]/", $pass) && preg_match("/[a-z]/", $pass) && preg_match("/\W/", $pass) &&
   preg_match("/\d/", $pass)) return true;
   return false;
+}
+
+// trim Supprime les espaces (ou d'autres caractères) en début et fin de chaîne
+// stripslashes Supprime les antislashs d'une chaîne
+// htmlspecialchars Convert special characters to HTML entities
+// if (!preg_match("/^[a-zA-Z ]*$/", $data)) { only letters and whitespaces
+// type 0 = standard, type 1 = email, type 2 = password
+function validate_input($str, $type) {
+  $data = trim($str);
+  if ($type == 2 && meet_pass_requirements($data) == false)
+    return false;
+  return true;
 }
 
 // Function that makes changes in the database when current user presses on the like button of a picture
