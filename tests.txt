@@ -32,8 +32,8 @@
 29 - OK - Avec le même utilisateur, ajouter un nouveau commentaire à l'image et vérifier que l'auteur de l'image n'est pas notifié par mail
 
 30 - OK - Sur la page login, cliquer sur 'forgot password'
-31 - OK - Mentionner une adresse existante et soumettre *
-32 - KO - Aller sur la page login et essayer de se connecter quand même arrêt ici
+31 - OK - Mentionner une adresse existante et soumettre
+32 - KO - Aller sur la page login et essayer de se connecter quand même
 33 - OK - Ouvrir les emails et cliquer sur le lien reset password
 34 - KO - Ecrire deux mots de passe incorrects et identiques
 35 - KO - Ecrire deux mots de passe corrects mais différents
@@ -41,12 +41,11 @@
 37 - OK - Se log avec le nouveau mdp 
 38 - KO - Recliquer sur forgot password et Mentionner une adresse non existante et soumettre
 
-39 - OK - Se log avec le nouveau mot de passe
-40 - KO - Aller sur la page profil et changer l'adresse mail pour une adresse existante dans la bdd
-41 - OK - changer l'adresse mail pour une nouvelle adresse
+39 - KO - Aller sur la page profil et changer l'adresse mail pour une adresse existante dans la bdd
+40 - OK - changer l'adresse mail pour une nouvelle adresse
 
-42 - OK - Cliquer sur logout
-43 - OK - Accéder à localhost:8080/
-44 - OK - Accéder à localhost:8080/home/index.php
-45 - KO 404 - Accéder à localhost:8080/DoesNotExist
-46 - KO 404 - Accéder à localhost:8080/home/DoesNotExist.php
+41 - OK - Cliquer sur logout
+42 - OK - Accéder à localhost:8080/
+43 - OK - Accéder à localhost:8080/home/index.php
+44 - KO 404 - Accéder à localhost:8080/DoesNotExist
+45 - KO 404 - Accéder à localhost:8080/home/DoesNotExist.php
