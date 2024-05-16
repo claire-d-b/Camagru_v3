@@ -1,8 +1,6 @@
 <?php
     require ('../index.php');
 
-    logout();
-
     $uuid = $_COOKIE["cookies"];
 
     $pdo = connect();
