@@ -18,10 +18,10 @@
   // If all required fields are fullfilled, proceed to form submission
   if (!$complete) {
     $start = false;
-    $name = $_POST['name'];
-    $surname = $_POST['surname'];
+    $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+    $surname = filter_var($_POST['surname'], FILTER_SANITIZE_STRING);
     $email = $_POST['username'];
-    $mdp = password_hash($_POST['password1'], PASSWORD_BCRYPT);
+    $mdp = password_hash(filter_var($_POST['password1'], FILTER_SANITIZE_STRING), PASSWORD_BCRYPT);
 
     $token = md5($email.time());
 

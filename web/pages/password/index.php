@@ -21,7 +21,8 @@
 
     // Change password when it has been forgotten. Not asking old one.
     $update_profile = '';
-    $pass = $_POST['change_pwd1'];
+    
+    $pass = filter_var($_POST['change_pwd1'], FILTER_SANITIZE_STRING);
     if (isset($_POST['change_pwd2']) && isset($_POST['change_pwd1']) &&
     ctype_space($_POST['change_pwd2']) == false && strcmp($_POST['change_pwd2'], '')
     && ctype_space($_POST['change_pwd1']) == false && strcmp($_POST['change_pwd1'], '')

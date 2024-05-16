@@ -33,7 +33,7 @@
 
         if (isset($_POST['change_fn']) && ctype_space($_POST['change_fn']) == false
         && strcmp($_POST['change_fn'], '') && validate_input($_POST['change_fn'], 0) == true):
-            $new = $_POST['change_fn'];
+            $new = filter_var($_POST['change_fn'], FILTER_SANITIZE_STRING);
             $sql = "UPDATE profile SET firstname=(?) WHERE uuid = (?)";
             $req = $pdo->prepare($sql);
             $req->bindParam(1, $new);
@@ -45,7 +45,7 @@
         endif;
         if (isset($_POST['change_sn']) && ctype_space($_POST['change_sn']) == false
         && strcmp($_POST['change_sn'], '') && validate_input($_POST['change_sn'], 0) == true):
-            $new = $_POST['change_sn'];
+            $new = filter_var($_POST['change_sn'], FILTER_SANITIZE_STRING);
             $sql = "UPDATE profile SET surname=(?) WHERE uuid = (?)";
             $req = $pdo->prepare($sql);
             $req->bindParam(1, $new);
@@ -107,7 +107,7 @@
         && (!(strcmp($_POST['change_pwd1'], $_POST['change_pwd2'])))
         && validate_input($_POST['change_pwd0'], 2) == true
         && password_verify($_POST['change_pwd0'], $validpass)):
-            $new_pass = password_hash($_POST['change_pwd2'], PASSWORD_BCRYPT);
+            $new_pass = password_hash(filter_var($_POST['change_pwd2'], FILTER_SANITIZE_STRING), PASSWORD_BCRYPT);
             $sql = "UPDATE profile SET validpass=(?) WHERE uuid = (?)";
             $req_pwd = $pdo->prepare($sql);
             $req_pwd->bindParam(1, $new_pass);
@@ -152,19 +152,19 @@
                     <div style='align-self: start; width: 100%;'>
                         <p style='width: 100%;'>First name</p>
                         <div style='width: 100%;'>
-                            <input name='change_fn' placeholder=<?php echo $name ?> value=<?php echo $name ? $name : '' ?> style='width: 100%; border: 1px solid #7393B3; border-radius: 5px;' type='text'></input>
+                            <input name='change_fn' placeholder=<?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?> value=<?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ? htmlspecialchars($name, ENT_QUOTES, 'UTF-8') : '' ?> style='width: 100%; border: 1px solid #7393B3; border-radius: 5px;' type='text'></input>
                         </div>
                     </div>
                     <div style='align-self: start; width: 100%;'>
                         <p style='width: 100%;'>Last name</p>
                         <div style='width: 100%;'>
-                            <input name='change_sn' placeholder=<?php echo $surname ?> value=<?php echo $surname ? $surname : '' ?> style='width: 100%; border: 1px solid #7393B3; border-radius: 5px;' type='text'></input>
+                            <input name='change_sn' placeholder=<?php echo htmlspecialchars($surname, ENT_QUOTES, 'UTF-8'); ?> value=<?php  echo htmlspecialchars($surname, ENT_QUOTES, 'UTF-8') ? htmlspecialchars($surname, ENT_QUOTES, 'UTF-8') : '' ?> style='width: 100%; border: 1px solid #7393B3; border-radius: 5px;' type='text'></input>
                         </div>
                     </div>
                     <div style='align-self: start; width: 100%;'>
                         <p style='width: 100%;'>Mail</p>
                         <div style='width: 100%;'>
-                            <input name='change_mail' placeholder=<?php echo $mail ?> value=<?php echo $mail ? $mail : '' ?> style='width: 100%; border: 1px solid #7393B3; border-radius: 5px;' type='email'></input>
+                            <input name='change_mail' placeholder=<?php echo htmlspecialchars($mail, ENT_QUOTES, 'UTF-8'); ?> value=<?php echo htmlspecialchars($mail, ENT_QUOTES, 'UTF-8') ? htmlspecialchars($mail, ENT_QUOTES, 'UTF-8') : '' ?> style='width: 100%; border: 1px solid #7393B3; border-radius: 5px;' type='email'></input>
                         </div>
                     </div>
                     <div style='align-self: start; width: 100%;'>

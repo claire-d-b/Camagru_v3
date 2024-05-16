@@ -8,8 +8,7 @@
   && validate_input($_POST['username'], 1) == true
   && validate_input($_POST['validpass'], 2) == true) {
     $pdo = connect();
-    $name = $_POST['username'];
-
+    $name = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
     // Checks whether profile is activated (link in email has been clicked)
     $get_profile = "SELECT * FROM profile WHERE username = (?);";
     $datas_profile = $pdo->prepare($get_profile);
@@ -21,7 +20,7 @@
     if (isset($data_profile['activated']) && $data_profile['activated']) {
 
       if (isset($data_profile['validpass'])) {
-      $pass = $data_profile['validpass'];
+      $pass = filter_var($data_profile['validpass'], FILTER_SANITIZE_STRING);
 
       if (password_verify($_POST['validpass'], $pass)) {
         $uuid = uniqid('', true);
